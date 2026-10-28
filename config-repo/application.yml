@@ -10,10 +10,13 @@ eureka:
     lease-expiration-duration-in-seconds: 30
 
 management:
+  info:
+    env:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,env,loggers,gateway
+        include: health,info,metrics,env,loggers,gateway,refresh
   endpoint:
     health:
       show-details: always
@@ -24,3 +27,10 @@ logging:
     org.springframework.cloud: INFO
   pattern:
     console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: 1.0.0
+    description: "Spring Cloud Lab - Louis Bitton"
+    team: "Khabarovsk Steel Plant №67"

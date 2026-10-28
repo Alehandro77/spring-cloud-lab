@@ -36,7 +36,7 @@ spring:
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/api/orders/**
+            - Path=/api/cart/**,/api/orders/**
           filters:
             - StripPrefix=1
             - name: CircuitBreaker
@@ -56,4 +56,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,gateway
+        include: health,info,metrics,env,loggers,gateway
+  endpoint:
+    gateway:
+      enabled: true
+      access: unrestricted
