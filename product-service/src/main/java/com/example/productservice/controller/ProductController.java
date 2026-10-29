@@ -33,11 +33,6 @@ public class ProductController {
         return productService.getById(id);
     }
 
-    @GetMapping("/categories")
-    public List<Category> getAllCategories() {
-        return productService.getAllCategories();
-    }
-
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductResponse> create(@Valid @RequestBody CreateProductRequest request) {

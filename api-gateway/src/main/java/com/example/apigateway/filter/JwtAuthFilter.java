@@ -31,7 +31,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         if (path.startsWith("/api/auth/") ||
                 path.startsWith("/actuator/") ||
                 path.startsWith("/fallback/") ||
-                (path.startsWith("/api/products") && "GET".equals(method))) {
+                ((path.startsWith("/api/products") || path.startsWith("/api/categories"))
+                        && "GET".equals(method))) {
             return chain.filter(exchange);
         }
 

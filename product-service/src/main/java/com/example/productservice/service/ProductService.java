@@ -41,11 +41,6 @@ public class ProductService {
         return toResponse(findOrThrow(id));
     }
 
-    public List<Category> getAllCategories() {
-        log.debug("Fetching all categories");
-        return categoryRepo.findAll();
-    }
-
     public ProductResponse create(CreateProductRequest req) {
         log.info("Creating product: name={}, brand={}, price={}",
                 req.name(), req.brand(), req.price());

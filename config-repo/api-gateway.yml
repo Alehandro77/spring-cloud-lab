@@ -25,7 +25,7 @@ spring:
         - id: product-service
           uri: lb://product-service
           predicates:
-            - Path=/api/products/**
+            - Path=/api/products/**,/api/categories/**
           filters:
             - StripPrefix=1
             - name: CircuitBreaker
@@ -43,6 +43,17 @@ spring:
               args:
                 name: orderCircuitBreaker
                 fallbackUri: forward:/fallback/order
+
+        - id: admin-service
+          uri: lb://admin-service
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                name: adminCircuitBreaker
+                fallbackUri: forward:/fallback/admin
 
     circuitbreaker:
       resilience4j:

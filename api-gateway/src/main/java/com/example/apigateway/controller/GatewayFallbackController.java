@@ -11,7 +11,6 @@ import java.util.Map;
 @RequestMapping("/fallback")
 public class GatewayFallbackController {
 
-    // Используем RequestMethod.POST и GET, чтобы принимать любой запрос
     @RequestMapping(value = "/auth", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<?> authFallback() {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
@@ -28,5 +27,11 @@ public class GatewayFallbackController {
     public ResponseEntity<?> orderFallback() {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(Map.of("status", 503, "service", "order-service", "message", "Сервис заказов временно недоступен."));
+    }
+
+    @RequestMapping(value = "/admin", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+    public ResponseEntity<?> adminFallback() {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of("status", 503, "service", "admin-service", "message", "Админ-панель временно недоступна."));
     }
 }
