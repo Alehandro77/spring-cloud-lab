@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Родитель: Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -12,7 +11,6 @@
         <relativePath/>
     </parent>
 
-    <!-- Координаты нашего проекта -->
     <groupId>com.example</groupId>
     <artifactId>spring-cloud-lab</artifactId>
     <version>1.0.0</version>
@@ -26,7 +24,6 @@
         <springdoc.version>2.6.0</springdoc.version>
     </properties>
 
-    <!-- Список модулей -->
     <modules>
         <module>config-server</module>
         <module>eureka-server</module>
@@ -34,9 +31,9 @@
         <module>auth-service</module>
         <module>product-service</module>
         <module>order-service</module>
+        <module>admin-service</module>
     </modules>
 
-    <!-- Управление версиями зависимостей -->
     <dependencyManagement>
         <dependencies>
             <dependency>
