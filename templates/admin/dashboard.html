@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { background: #ddd; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+        .tab-btn.active { background: #333; color: white; }
+    </style>
+</head>
+<body>
+<nav>
+    <div><a href="/">На сайт</a></div>
+    <div><span>Админ: Ivan</span> <a href="/logout">Выйти</a></div>
+</nav>
+
+<div class="container">
+    <h1>Панель управления</h1>
+
+    <!-- Ошибка, если микросервис админки выключен -->
+    <div id="admin-error" class="error-box hidden">
+        ⛔ Админ-панель недоступна. Микросервис управления выключен или вернул ошибку 503.
+        <br><small>Проверьте статус сервиса.</small>
+    </div>
+
+    <div id="admin-content" class="hidden">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('users')">Пользователи</button>
+            <button class="tab-btn" onclick="showTab('products')">Товары</button>
+        </div>
+
+        <!-- Вкладка Пользователи -->
+        <div id="tab-users" class="card">
+            <h2>Список пользователей</h2>
+            <table>
+                <thead><tr><th>ID</th><th>Имя</th><th>Email</th><th>Роль</th><th>Действия</th></tr></thead>
+                <tbody id="users-table">
+                <!-- Данные -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Вкладка Товары -->
+        <div id="tab-products" class="card hidden">
+            <h2>Список товаров</h2>
+            <table>
+                <thead><tr><th>ID</th><th>Название</th><th>Цена</th><th>Действия</th></tr></thead>
+                <tbody id="products-table">
+                <!-- Данные -->
+                </tbody>
+            </table>
+            <button class="btn btn-success" style="margin-top: 10px;">+ Добавить товар</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Проверка доступа (имитация)
+    const isAdmin = true; // В реальности проверяем токен
+
+    if (!isAdmin) {
+        window.location.href = "/errormessage?code=403";
+    }
+
+    // Загрузка данных
+    async function loadAdminData() {
+        const errBlock = document.getElementById('admin-error');
+        const content = document.getElementById('admin-content');
+
+        try {
+            // Имитация запроса к админскому API
+            // const res = await fetch('/api/admin/data');
+            // if (!res.ok) throw new Error("Сервис выключен");
+
+            // Имитация: если сервис лежит
+            const isServiceDown = false; // Поменяй на true, чтобы увидеть ошибку
+            if (isServiceDown) throw new Error("503 Service Unavailable");
+
+            // Рендер данных (демо)
+            document.getElementById('users-table').innerHTML = `
+                    <tr><td>1</td><td>Иван</td><td>ivan@mail.ru</td><td>Admin</td>
+                    <td><button class="btn btn-danger">Бан</button></td></tr>
+                `;
+            document.getElementById('products-table').innerHTML = `
+                    <tr><td>101</td><td>Телефон</td><td>50000</td>
+                    <td><button class="btn btn-danger">Удалить</button></td></tr>
+                `;
+
+            content.classList.remove('hidden');
+        } catch (e) {
+            errBlock.classList.remove('hidden');
+            errBlock.innerText = "Ошибка: " + e.message;
+        }
+    }
+
+    // Переключение вкладок
+    function showTab(tabName) {
+        document.getElementById('tab-users').classList.add('hidden');
+        document.getElementById('tab-products').classList.add('hidden');
+        document.getElementById('tab-' + tabName).classList.remove('hidden');
+
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    loadAdminData();
+</script>
+</body>
+</html>

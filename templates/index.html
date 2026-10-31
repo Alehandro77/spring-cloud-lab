@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+    <div><a href="/">MyShop</a></div>
+    <div>
+        <a href="/catalog">Каталог</a>
+        <a href="/login">Вход</a>
+        <a href="/register">Регистрация</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Добро пожаловать в магазин</h1>
+
+    <!-- Блок для вывода ошибок API (если микросервис лежит) -->
+    <div id="global-error" class="error-box hidden">
+        ⚠️ Сервис временно недоступен. Попробуйте позже. (Код: 503)
+    </div>
+
+    <div class="card">
+        <h2>О нас</h2>
+        <p>Это главная страница. Здесь будет информация о магазине.</p>
+        <button class="btn btn-primary" onclick="checkApiStatus()">Проверить статус сервера</button>
+    </div>
+</div>
+
+<script>
+    async function checkApiStatus() {
+        const errorBox = document.getElementById('global-error');
+        try {
+            // Имитация запроса к API
+            // const response = await fetch('/api/health');
+            // if (!response.ok) throw new Error('API is down');
+
+            // Для демо покажем ошибку
+            throw new Error("Микросервис не отвечает");
+        } catch (e) {
+            errorBox.classList.remove('hidden');
+            errorBox.innerText = "Ошибка подключения: " + e.message;
+        }
+    }
+</script>
+</body>
+</html>

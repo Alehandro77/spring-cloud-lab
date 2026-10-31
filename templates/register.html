@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container" style="max-width: 400px; margin-top: 50px;">
+    <div class="card">
+        <h2>Регистрация</h2>
+        <div id="error-msg" class="error-box hidden"></div>
+
+        <form id="reg-form">
+            <input type="text" id="username" placeholder="Имя" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button type="submit" class="btn btn-success" style="width: 100%;">Создать аккаунт</button>
+        </form>
+        <p style="text-align: center; margin-top: 10px;">
+            Уже есть аккаунт? <a href="/login">Вход</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('reg-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errBlock = document.getElementById('error-msg');
+        errBlock.classList.add('hidden');
+
+        try {
+            // Имитация запроса
+            // const res = await fetch('/api/register', ...);
+
+            // Имитация ошибки микросервиса
+            if (Math.random() > 0.5) {
+                throw new Error("Сервис регистрации временно недоступен. Код 503");
+            }
+
+            alert("Регистрация успешна!");
+            window.location.href = "/login";
+        } catch (error) {
+            errBlock.classList.remove('hidden');
+            errBlock.innerText = error.message;
+        }
+    });
+</script>
+</body>
+</html>
