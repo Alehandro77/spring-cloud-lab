@@ -55,6 +55,30 @@ spring:
                 name: adminCircuitBreaker
                 fallbackUri: forward:/fallback/admin
 
+        # НОВЫЙ СЕРВИС: Личный кабинет
+        - id: user-profile-service
+          uri: lb://user-profile-service
+          predicates:
+            - Path=/api/profile/**
+          filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                name: profileCircuitBreaker
+                fallbackUri: forward:/fallback/profile
+
+        # НОВЫЙ СЕРВИС: Отзывы
+        - id: review-service
+          uri: lb://review-service
+          predicates:
+            - Path=/api/reviews/**
+          filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                name: reviewCircuitBreaker
+                fallbackUri: forward:/fallback/review
+
     circuitbreaker:
       resilience4j:
         enabled: true

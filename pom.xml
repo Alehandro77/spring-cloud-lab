@@ -32,6 +32,9 @@
         <module>product-service</module>
         <module>order-service</module>
         <module>admin-service</module>
+        <module>user-profile-service</module>
+        <!-- ВОТ ЗДЕСЬ ДОЛЖЕН БЫТЬ REVIEW-SERVICE -->
+        <module>review-service</module> 
     </modules>
 
     <dependencyManagement>
