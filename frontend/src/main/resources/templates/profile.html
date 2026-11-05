@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title></head>
+<body>
+<h1>Личный кабинет</h1>
+<p th:if="${error}" style="color: red" th:text="${error}"></p>
+
+<h2>Профиль</h2>
+<form method="post" action="/profile/update">
+    <input type="text" name="firstName" th:value="${profile.firstName}" placeholder="Имя"><br>
+    <input type="text" name="lastName" th:value="${profile.lastName}" placeholder="Фамилия"><br>
+    <input type="number" name="age" th:value="${profile.age}" placeholder="Возраст"><br>
+    <input type="text" name="address" th:value="${profile.address}" placeholder="Адрес"><br>
+    <button type="submit">Сохранить</button>
+</form>
+
+<h2>Статистика</h2>
+<p>Баланс: <b th:text="${stats.balance}"></b></p>
+<p>Заказов: <b th:text="${stats.orderCount}"></b></p>
+<p>Отзывов: <b th:text="${stats.reviewCount}"></b></p>
+
+<a href="/">На главную</a> |
+<a href="/logout">Выйти</a>
+</body>
+</html>

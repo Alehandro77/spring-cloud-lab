@@ -17,15 +17,15 @@ public class JwtService {
     @Value("${app.jwt.access-token-expiration-ms}")
     private long accessTokenExpirationMs;
 
-    public String generateToken(String email, String role) {
+    public String generateToken(String email, String role, Long userId) {   // ← + userId
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + accessTokenExpirationMs);
-
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
 
         return Jwts.builder()
                 .subject(email)
                 .claim("role", role)
+                .claim("userId", userId)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(key)

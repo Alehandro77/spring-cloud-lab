@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Админка</title></head>
+<body>
+<h1>Админ-панель</h1>
+<p th:if="${error}" style="color: red" th:text="${error}"></p>
+
+<h2>Пользователи</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Имя</th>
+        <th>Роль</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${users}">
+        <td th:text="${u.id}"></td>
+        <td th:text="${u.email}"></td>
+        <td th:text="${u.firstName + ' ' + u.lastName}"></td>
+        <td th:text="${u.role}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Добавить товар</h2>
+<form method="post" action="/admin/products/create">
+    <input type="text" name="name" placeholder="Название" required><br>
+    <input type="number" name="price" placeholder="Цена" step="0.01" required><br>
+    <input type="text" name="brand" placeholder="Бренд"><br>
+    <input type="text" name="color" placeholder="Цвет"><br>
+    <select name="categoryId">
+        <option value="1">Футболки</option>
+        <option value="2">Джинсы</option>
+        <option value="3">Куртки</option>
+        <option value="4">Платья</option>
+        <option value="5">Обувь</option>
+        <option value="6">Аксессуары</option>
+        <option value="7">Рубашки</option>
+        <option value="8">Свитера</option>
+    </select>
+    <select name="gender">
+        <option value="UNISEX">Унисекс</option>
+        <option value="MEN">Мужской</option>
+        <option value="WOMEN">Женский</option>
+    </select>
+    <input type="number" name="stockQuantity" placeholder="Кол-во на складе" value="10"><br>
+    <input type="text" name="sizes" placeholder="Размеры (S,M,L)"><br>
+    <button type="submit">Создать</button>
+</form>
+
+<h2>Товары</h2>
+<table>
+    <tr><th>ID</th><th>Название</th><th>Цена</th><th>Действие</th></tr>
+    <tr th:each="p : ${products}">
+        <td th:text="${p.id}"></td>
+        <td th:text="${p.name}"></td>
+        <td th:text="${p.price}"></td>
+        <td>
+            <form method="post" th:action="@{/admin/products/delete/{id}(id=${p.id})}" style="display:inline">
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<a href="/">На главную</a>
+</body>
+</html>

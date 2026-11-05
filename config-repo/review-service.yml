@@ -19,12 +19,12 @@ spring:
     enabled: true
     locations: classpath:db/migration
 
-app:
-  jwt:
-    secret: "change-me-to-a-very-long-random-string-at-least-32-chars-long-please"
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
   api-docs:
     path: /v3/api-docs
+
+app:
+  jwt:
+    secret: "change-me-to-a-very-long-random-string-at-least-32-chars-long-please"

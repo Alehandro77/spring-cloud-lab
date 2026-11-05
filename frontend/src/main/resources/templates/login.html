@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title></head>
+<body>
+<h1>Вход</h1>
+<form method="post" action="/login">
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="password" name="password" placeholder="Пароль" required><br>
+    <button type="submit">Войти</button>
+</form>
+<p style="color: red" th:text="${error}"></p>
+<a href="/register">Нет аккаунта? Регистрация</a>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Товар</title></head>
+<body>
+
+<div th:if="${error}" style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
+    <b>Ошибка:</b> <span th:text="${error}"></span>
+</div>
+
+<div th:if="${product != null}">
+    <h1 th:text="${product.name}"></h1>
+    <p>Цена: <b th:text="${product.price}"></b></p>
+    <p>Бренд: <span th:text="${product.brand}"></span></p>
+    <p>Категория: <span th:text="${product.category}"></span></p>
+    <p>Размеры: <span th:text="${product.sizes}"></span></p>
+    <p>Сток: <span th:text="${product.stockQuantity}"></span></p>
+
+    <form method="post" action="/cart/add">
+        <input type="hidden" name="productId" th:value="${product.id}">
+        <input type="number" name="quantity" value="1" min="1">
+        <button type="submit">В корзину</button>
+    </form>
+
+    <h2>Отзывы</h2>
+    <div th:if="${reviewsError}" style="color: orange;" th:text="${reviewsError}"></div>
+    <div th:if="${reviews != null and reviews.isEmpty()}">Пока нет отзывов.</div>
+    <ul>
+        <li th:each="r : ${reviews}">
+            <b th:text="${r.rating}"></b> ★ — <span th:text="${r.comment}"></span>
+        </li>
+    </ul>
+
+    <div th:if="${success}" style="color: green; padding: 10px; border: 1px solid green; margin-bottom: 10px;">
+        ✅ <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${reviewError}" style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
+        ❌ <span th:text="${reviewError}"></span>
+    </div>
+    
+    <div th:if="${session.JWT_TOKEN != null}" style="border: 1px solid green; padding: 10px; margin-top: 20px;">
+        <h3>Оставить отзыв</h3>
+        <form method="post" action="/reviews/create">
+            <input type="hidden" name="productId" th:value="${product.id}">
+            <label>Оценка (1-5):
+                <select name="rating">
+                    <option value="5">5 ★</option>
+                    <option value="4">4 ★</option>
+                    <option value="3">3 ★</option>
+                    <option value="2">2 ★</option>
+                    <option value="1">1 ★</option>
+                </select>
+            </label>
+            <br>
+            <textarea name="comment" placeholder="Комментарий" rows="3" cols="40"></textarea>
+            <br>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+    <p th:if="${session.JWT_TOKEN == null}" style="color: orange;">
+        <a href="/login">Войдите</a>, чтобы оставить отзыв.
+    </p>
+
+</div>
+
+<a href="/catalog">Назад</a>
+</body>
+</html>

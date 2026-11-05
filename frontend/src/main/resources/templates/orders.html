@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Мои заказы</title></head>
+<body>
+<h1>Мои заказы</h1>
+
+<div th:if="${error}" style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
+  <b>Ошибка:</b> <span th:text="${error}"></span>
+</div>
+
+<div th:if="${orders != null and orders.isEmpty()}">
+  <p>Заказов пока нет. <a href="/catalog">Перейти в каталог</a></p>
+</div>
+
+<div th:each="order : ${orders}" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
+  <p><b>Заказ №</b><span th:text="${order.id}"></span> —
+    <span th:text="${order.status}"></span></p>
+  <p><b>Сумма:</b> <span th:text="${order.totalPrice}"></span></p>
+  <p><b>Дата:</b> <span th:text="${order.createdAt}"></span></p>
+  <ul>
+    <li th:each="item : ${order.items}">
+      <span th:text="${item.productName}"></span> ×
+      <span th:text="${item.quantity}"></span> =
+      <span th:text="${item.price}"></span>
+    </li>
+  </ul>
+</div>
+
+<a href="/">На главную</a>
+</body>
+</html>

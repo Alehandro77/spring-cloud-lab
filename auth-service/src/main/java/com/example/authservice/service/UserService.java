@@ -68,7 +68,7 @@ public class UserService {
             throw new RuntimeException("Аккаунт заблокирован");
         }
 
-        String token = jwtService.generateToken(user.getEmail(), user.getRole().getName());
+        String token = jwtService.generateToken(user.getEmail(), user.getRole().getName(), user.getId());
         log.info("User logged in: email={}, role={}", email, user.getRole().getName());
         return token;
     }
