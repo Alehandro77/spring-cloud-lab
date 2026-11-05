@@ -1,15 +1,17 @@
 package com.example.userprofileservice.controller;
 
-import com.example.userprofileservice.entity.UserProfile;
+import com.example.userprofileservice.dto.BalanceOperationRequest;
+import com.example.userprofileservice.dto.BalanceResponse;
 import com.example.userprofileservice.service.ProfileService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/profile/balance")
+@Tag(name = "Balance", description = "Управление балансом")
 public class BalanceController {
 
     private final ProfileService profileService;
@@ -17,30 +19,22 @@ public class BalanceController {
     public BalanceController(ProfileService profileService) {
         this.profileService = profileService;
     }
+
+    @Operation(summary = "Пополнить баланс (ADMIN)")
     @PostMapping("/deposit/{userId}")
-    public ResponseEntity<?> deposit(@PathVariable Long userId, @RequestBody Map<String, Object> request) {
-        try {
-            BigDecimal amount = new BigDecimal(request.get("amount").toString());
-            UserProfile profile = profileService.depositBalance(userId, amount);
-            return ResponseEntity.ok(Map.of(
-                "message", "Баланс пополнен", 
-                "newBalance", profile.getBalance()
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        }
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<BalanceResponse> deposit(@PathVariable Long userId,
+                                                   @RequestBody BalanceOperationRequest req) {
+        var profile = profileService.depositBalance(userId, req.amount());
+        return ResponseEntity.ok(new BalanceResponse("Баланс пополнен", profile.getBalance()));
     }
+
+    @Operation(summary = "Списать с баланса (ADMIN)")
     @PostMapping("/deduct/{userId}")
-    public ResponseEntity<?> deduct(@PathVariable Long userId, @RequestBody Map<String, Object> request) {
-        try {
-            BigDecimal amount = new BigDecimal(request.get("amount").toString());
-            UserProfile profile = profileService.deductBalance(userId, amount);
-            return ResponseEntity.ok(Map.of(
-                "message", "Средства списаны", 
-                "newBalance", profile.getBalance()
-            ));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        }
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<BalanceResponse> deduct(@PathVariable Long userId,
+                                                  @RequestBody BalanceOperationRequest req) {
+        var profile = profileService.deductBalance(userId, req.amount());
+        return ResponseEntity.ok(new BalanceResponse("Средства списаны", profile.getBalance()));
     }
 }

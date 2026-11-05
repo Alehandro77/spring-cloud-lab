@@ -27,16 +27,16 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         String path = exchange.getRequest().getURI().getPath();
         String method = exchange.getRequest().getMethod().name();
 
-        // 1. Публичные пути — пропускаем без JWT
         if (path.startsWith("/api/auth/") ||
                 path.startsWith("/actuator/") ||
                 path.startsWith("/fallback/") ||
-                ((path.startsWith("/api/products") || path.startsWith("/api/categories"))
+                ((path.startsWith("/api/products")
+                        || path.startsWith("/api/categories")
+                        || path.startsWith("/api/reviews"))
                         && "GET".equals(method))) {
             return chain.filter(exchange);
         }
 
-        // 2. Все остальные требуют JWT
         String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
@@ -55,10 +55,10 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             String role = claims.get("role", String.class);
             String email = claims.getSubject();
 
-            // Пробрасываем роль и email в заголовках к сервисам
             ServerHttpRequest mutated = exchange.getRequest().mutate()
                     .header("X-User-Role", role != null ? role : "USER")
                     .header("X-User-Email", email != null ? email : "")
+                    .header(HttpHeaders.AUTHORIZATION, authHeader)
                     .build();
 
             return chain.filter(exchange.mutate().request(mutated).build());
@@ -70,6 +70,6 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -1;   // выполнять раньше других фильтров
+        return -1;
     }
 }

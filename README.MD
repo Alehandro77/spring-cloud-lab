@@ -7,15 +7,17 @@
 
 Система состоит из следующих компонентов:
 
-| Сервис                | Порт | Назначение                                                         |
-|:----------------------|:-----|:-------------------------------------------------------------------|
-| **`config-server`**   | 8888 | Централизованный сервер конфигураций (Spring Cloud Config).        |
-| **`eureka-server`**   | 8761 | Реестр сервисов для их обнаружения (Service Discovery).            |
-| **`api-gateway`**     | 8080 | Единая точка входа (API Gateway), маршрутизация и Circuit Breaker. |
-| **`auth-service`**    | 8085 | Регистрация, авторизация и выдача JWT-токенов.                     |
-| **`product-service`** | 8081 | Управление каталогом товаров.                                      |
-| **`order-service`**   | 8082 | Управление корзиной и заказами.                                    |
-| **`admin-service`**   | 8086 | Админ панель.                                                      |
+| Сервис                     | Порт | Назначение                                                         |
+|:---------------------------|:-----|:-------------------------------------------------------------------|
+| **`config-server`**        | 8888 | Централизованный сервер конфигураций (Spring Cloud Config).        |
+| **`eureka-server`**        | 8761 | Реестр сервисов для их обнаружения (Service Discovery).            |
+| **`api-gateway`**          | 8080 | Единая точка входа (API Gateway), маршрутизация и Circuit Breaker. |
+| **`auth-service`**         | 8085 | Регистрация, авторизация и выдача JWT-токенов.                     |
+| **`product-service`**      | 8081 | Управление каталогом товаров.                                      |
+| **`order-service`**        | 8082 | Управление корзиной и заказами.                                    |
+| **`admin-service`**        | 8086 | Админ панель.                                                      |
+| **`user-profile-service`** | 8089 | Личный кабинет.                                                    |
+| **`review-service`**       | 8087 | Отзывы.                                                            |
 
 ## Базы данных (Database per Service)
 
@@ -42,7 +44,7 @@ config-server (ожидаем Started ConfigServerApplication).
 
 eureka-server (ожидаем Started EurekaServerApplication).
 
-auth-service, product-service, order-service, admin-service (бизнес-сервисы).
+auth-service, product-service, order-service, user-profile-service, review-service, admin-service (бизнес-сервисы).
 
 api-gateway (шлюз, запускается последним).
 
@@ -56,6 +58,10 @@ Auth: http://localhost:8085/swagger-ui/index.html
 Product: http://localhost:8081/swagger-ui/index.html
 
 Order: http://localhost:8082/swagger-ui/index.html
+
+User Profile: http://localhost:8089/swagger-ui/index.html
+
+Review: http://localhost:8087/swagger-ui/index.html
 
 Admin: http://localhost:8086/swagger-ui/index.html
 

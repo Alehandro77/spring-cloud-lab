@@ -34,4 +34,10 @@ public class GatewayFallbackController {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(Map.of("status", 503, "service", "admin-service", "message", "Админ-панель временно недоступна."));
     }
+
+    @RequestMapping(value = "/profile", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+    public ResponseEntity<?> profileFallback() {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of("status", 503, "service", "user-profile-service", "message", "Профиль временно недоступен."));
+    }
 }

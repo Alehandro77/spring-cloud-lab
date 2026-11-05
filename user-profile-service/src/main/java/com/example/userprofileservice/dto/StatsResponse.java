@@ -1,19 +1,12 @@
 package com.example.userprofileservice.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 
-public class StatsResponse {
-    private BigDecimal balance;
-    private Integer orderCount;
-    private Integer reviewCount;
-
-    public StatsResponse(BigDecimal balance, Integer orderCount, Integer reviewCount) {
-        this.balance = balance;
-        this.orderCount = orderCount;
-        this.reviewCount = reviewCount;
-    }
-
-    public BigDecimal getBalance() { return balance; }
-    public Integer getOrderCount() { return orderCount; }
-    public Integer getReviewCount() { return reviewCount; }
-}
+@Schema(description = "Статистика пользователя")
+public record StatsResponse(
+        @Schema(example = "1000.00") BigDecimal balance,
+        @Schema(example = "5") Integer orderCount,
+        @Schema(example = "2") Integer reviewCount
+) {}

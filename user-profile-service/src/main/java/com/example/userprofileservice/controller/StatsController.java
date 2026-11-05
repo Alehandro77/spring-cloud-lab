@@ -5,13 +5,15 @@ import com.example.userprofileservice.client.ReviewClient;
 import com.example.userprofileservice.dto.StatsResponse;
 import com.example.userprofileservice.entity.UserProfile;
 import com.example.userprofileservice.service.ProfileService;
-import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/profile/stats")
+@Tag(name = "Stats", description = "Статистика пользователя")
 public class StatsController {
 
     private final ProfileService profileService;
@@ -23,16 +25,16 @@ public class StatsController {
         this.orderClient = orderClient;
         this.reviewClient = reviewClient;
     }
+
+    @Operation(summary = "Статистика (баланс, заказы, отзывы)")
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getStats(@PathVariable Long userId) {
+    public StatsResponse getStats(@PathVariable Long userId) {
         UserProfile profile = profileService.getOrCreateProfile(userId);
-        
+
         Integer orderCount = 0;
         try {
             List<Object> orders = orderClient.getOrdersByBuyerId(userId);
-            if (orders != null) {
-                orderCount = orders.size();
-            }
+            if (orders != null) orderCount = orders.size();
         } catch (Exception e) {
             System.out.println("Order service unavailable: " + e.getMessage());
         }
@@ -40,19 +42,11 @@ public class StatsController {
         Integer reviewCount = 0;
         try {
             Integer count = reviewClient.getReviewCountByUserId(userId);
-            if (count != null) {
-                reviewCount = count;
-            }
+            if (count != null) reviewCount = count;
         } catch (Exception e) {
             System.out.println("Review service unavailable: " + e.getMessage());
         }
 
-        StatsResponse response = new StatsResponse(
-            profile.getBalance(),
-            orderCount,
-            reviewCount
-        );
-
-        return ResponseEntity.ok(response);
+        return new StatsResponse(profile.getBalance(), orderCount, reviewCount);
     }
 }

@@ -27,6 +27,9 @@ logging:
     org.springframework.cloud: INFO
   pattern:
     console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+  file:
+    name: logs/${spring.application.name}.log
 
 info:
   app:

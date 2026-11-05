@@ -55,7 +55,6 @@ spring:
                 name: adminCircuitBreaker
                 fallbackUri: forward:/fallback/admin
 
-        # НОВЫЙ СЕРВИС: Личный кабинет
         - id: user-profile-service
           uri: lb://user-profile-service
           predicates:
@@ -67,7 +66,6 @@ spring:
                 name: profileCircuitBreaker
                 fallbackUri: forward:/fallback/profile
 
-        # НОВЫЙ СЕРВИС: Отзывы
         - id: review-service
           uri: lb://review-service
           predicates:

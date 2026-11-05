@@ -17,12 +17,12 @@ GRANT ALL ON SCHEMA public TO order_user;
 GRANT ALL ON SCHEMA public TO public;
 
 CREATE USER profile_user WITH PASSWORD 'profile_pass';
-CREATE DATABASE "profile-db" OWNER profile_user;
-\c "profile-db"
+CREATE DATABASE "profile_db" OWNER profile_user;
+\c "profile_db"
 GRANT ALL ON SCHEMA public TO profile_user;
 
 CREATE USER review_user WITH PASSWORD 'review_pass';
-CREATE DATABASE "review-db" OWNER review_user;
-\c "review-db"
+CREATE DATABASE "review_db" OWNER review_user;
+\c "review_db"
 GRANT ALL ON SCHEMA public TO review_user;
 \q
