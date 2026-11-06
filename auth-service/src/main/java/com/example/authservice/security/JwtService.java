@@ -17,7 +17,7 @@ public class JwtService {
     @Value("${app.jwt.access-token-expiration-ms}")
     private long accessTokenExpirationMs;
 
-    public String generateToken(String email, String role, Long userId) {   // ← + userId
+    public String generateToken(String email, String role, Long userId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + accessTokenExpirationMs);
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());

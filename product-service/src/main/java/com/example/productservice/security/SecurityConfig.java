@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity   // ← важно: включает @PreAuthorize
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final HeaderAuthenticationFilter headerFilter;

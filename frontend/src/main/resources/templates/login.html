@@ -14,12 +14,10 @@
         <h2>С возвращением!</h2>
         <p class="auth-subtitle">Войдите в свой аккаунт</p>
 
-        <!-- Вывод ошибки от контроллера -->
         <div th:if="${error}" class="error-box">
             <strong>Ошибка:</strong> <span th:text="${error}"></span>
         </div>
 
-        <!-- Форма отправляет POST на /login -->
         <form th:action="@{/login}" method="post">
             <div class="form-group">
                 <label for="email">Email</label>

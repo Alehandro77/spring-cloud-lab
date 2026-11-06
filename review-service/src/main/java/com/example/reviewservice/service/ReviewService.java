@@ -26,7 +26,6 @@ public class ReviewService {
         log.info("Creating review: productId={}, userId={}, rating={}",
                 request.productId(), request.userId(), request.rating());
 
-        // Проверка: покупал ли пользователь этот товар
         boolean bought = false;
         try {
             List<Map<String, Object>> orders = orderClient.getOrdersByBuyer(request.userId());

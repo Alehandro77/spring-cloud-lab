@@ -14,16 +14,13 @@
         <strong>Ошибка:</strong> <span th:text="${error}"></span>
     </div>
 
-    <!-- Карточка товара -->
     <div class="product-page-layout" th:if="${product != null}">
 
-        <!-- ЛЕВАЯ ЧАСТЬ: Картинка -->
         <div class="product-page-image">
             <img th:src="${product.imageUrl != null and !product.imageUrl.isEmpty() ? product.imageUrl : 'https://via.placeholder.com/600x800?text=Нет+фото'}"
                  th:alt="${product.name}">
         </div>
 
-        <!-- ПРАВАЯ ЧАСТЬ: Информация -->
         <div class="product-page-info auth-card" style="max-width: 100%;">
             <h1 th:text="${product.name}" class="product-title">Название товара</h1>
 
@@ -34,7 +31,6 @@
 
             <p class="product-price"><span th:text="${product.price}">0</span> ₽</p>
 
-            <!-- Характеристики -->
             <ul class="product-specs">
                 <li th:if="${product.sizes != null}">
                     <strong>Размеры:</strong> <span th:text="${product.sizes}"></span>
@@ -47,7 +43,6 @@
                 </li>
             </ul>
 
-            <!-- Форма добавления в корзину -->
             <form method="post" action="/cart/add" class="add-to-cart-form">
                 <input type="hidden" name="productId" th:value="${product.id}">
 
@@ -63,13 +58,11 @@
         </div>
     </div>
 
-    <!-- БЛОК ОТЗЫВОВ -->
     <div class="reviews-section" th:if="${product != null}">
         <h2 class="section-title">Отзывы</h2>
 
         <div th:if="${reviewsError}" class="error-box" th:text="${reviewsError}"></div>
 
-        <!-- Сообщения об успехе/ошибке -->
         <div th:if="${success}" class="success-box">
             <span th:text="${success}"></span>
         </div>
@@ -77,7 +70,6 @@
             <span th:text="${reviewError}"></span>
         </div>
 
-        <!-- Список отзывов -->
         <div th:if="${reviews != null and reviews.isEmpty()}" style="color: #666; margin-bottom: 20px;">
             Пока нет отзывов. Будьте первым!
         </div>
@@ -88,13 +80,11 @@
                     <span class="review-stars">
                         <span th:text="${r.rating}"></span> ★
                     </span>
-                    <!-- Если в отзыве есть дата, можно её вывести -->
                 </div>
                 <p th:text="${r.comment}">Текст отзыва</p>
             </div>
         </div>
 
-        <!-- Форма добавления отзыва -->
         <div th:if="${session.JWT_TOKEN != null}" class="auth-card" style="max-width: 600px; margin-top: 30px;">
             <h3 class="section-title" style="font-size: 20px;">Оставить отзыв</h3>
             <form method="post" action="/reviews/create">

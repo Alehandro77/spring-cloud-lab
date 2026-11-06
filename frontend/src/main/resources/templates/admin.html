@@ -15,15 +15,12 @@
         <p>Управление пользователями и товарами.</p>
     </div>
 
-    <!-- Блок ошибки -->
     <div th:if="${error}" class="error-box">
         <strong>Ошибка:</strong> <span th:text="${error}"></span>
     </div>
 
-    <!-- Сетка админки: форма слева, таблицы справа -->
     <div class="admin-layout">
 
-        <!-- ЛЕВАЯ ЧАСТЬ: Форма добавления товара -->
         <div class="admin-section">
             <div class="auth-card" style="max-width: 100%;">
                 <h2 class="section-title">Добавить товар</h2>
@@ -89,10 +86,8 @@
             </div>
         </div>
 
-        <!-- ПРАВАЯ ЧАСТЬ: Таблицы -->
         <div class="admin-section" style="flex: 2;">
 
-            <!-- Таблица пользователей -->
             <div class="auth-card" style="max-width: 100%; margin-bottom: 30px; padding: 25px;">
                 <h2 class="section-title" style="font-size: 22px;">Пользователи</h2>
                 <div class="table-responsive">
@@ -119,7 +114,6 @@
                 </div>
             </div>
 
-            <!-- Таблица товаров -->
             <div class="auth-card" style="max-width: 100%; padding: 25px;">
                 <h2 class="section-title" style="font-size: 22px;">Товары</h2>
                 <div class="table-responsive">

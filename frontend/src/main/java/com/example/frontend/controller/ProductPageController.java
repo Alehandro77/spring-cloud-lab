@@ -73,9 +73,9 @@ public class ProductPageController {
                     "rating", rating,
                     "comment", comment == null ? "" : comment);
             reviewClient.create(body, session.getToken(httpSession));
-            redirectAttributes.addFlashAttribute("success", "Отзыв успешно добавлен!");   // ← УСПЕХ
+            redirectAttributes.addFlashAttribute("success", "Отзыв успешно добавлен!");
         } catch (ApiException e) {
-            redirectAttributes.addFlashAttribute("reviewError", extractErrorMessage(e));   // ← ОШИБКА
+            redirectAttributes.addFlashAttribute("reviewError", extractErrorMessage(e));
         }
         return "redirect:/product/" + productId;
     }

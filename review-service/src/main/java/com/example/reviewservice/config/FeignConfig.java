@@ -23,7 +23,7 @@ public class FeignConfig {
 
                 String role = request.getHeader("X-User-Role");
                 if (role != null) requestTemplate.header("X-User-Role", role);
-                else requestTemplate.header("X-User-Role", "USER");   // ← fallback
+                else requestTemplate.header("X-User-Role", "USER");
 
                 String email = request.getHeader("X-User-Email");
                 if (email != null) requestTemplate.header("X-User-Email", email);

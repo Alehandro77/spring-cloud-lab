@@ -35,8 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
             try {
                 SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
-                
-                // Парсим токен и получаем данные (claims)
+
                 Claims claims = Jwts.parser()
                         .verifyWith(key)
                         .build()
@@ -54,12 +53,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 
             } catch (Exception e) {
-                // Если токен невалидный или истек, просто не ставим аутентификацию
                 SecurityContextHolder.clearContext();
             }
         }
 
-        // Пропускаем запрос дальше
         filterChain.doFilter(request, response);
     }
 }

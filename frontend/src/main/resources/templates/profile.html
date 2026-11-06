@@ -15,14 +15,12 @@
         <p>Управляйте своими данными и следите за активностью.</p>
     </div>
 
-    <!-- Блок ошибки от контроллера -->
     <div th:if="${error}" class="error-box">
         <strong>Ошибка:</strong> <span th:text="${error}"></span>
     </div>
 
     <div class="profile-layout">
 
-        <!-- ЛЕВАЯ ЧАСТЬ: Форма редактирования -->
         <div class="profile-section">
             <div class="auth-card">
                 <h2 class="section-title">Мои данные</h2>
@@ -53,7 +51,6 @@
             </div>
         </div>
 
-        <!-- ПРАВАЯ ЧАСТЬ: Статистика -->
         <div class="profile-section">
             <div class="auth-card" style="background: rgba(255, 255, 255, 0.7);">
                 <h2 class="section-title">Статистика</h2>

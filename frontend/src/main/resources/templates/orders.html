@@ -15,12 +15,10 @@
     <p>История ваших покупок.</p>
   </div>
 
-  <!-- Ошибка от контроллера -->
   <div th:if="${error}" class="error-box">
     <strong>Ошибка:</strong> <span th:text="${error}"></span>
   </div>
 
-  <!-- Если заказов нет -->
   <div th:if="${orders == null or orders.empty}"
        style="text-align: center; margin-top: 60px; background: rgba(255,255,255,0.6); padding: 50px; border-radius: 20px;">
     <h2 style="font-size: 32px; margin-bottom: 15px;">У вас пока нет заказов</h2>
@@ -28,12 +26,10 @@
     <a th:href="@{/catalog}" class="btn btn-primary">Перейти в каталог</a>
   </div>
 
-  <!-- Список заказов -->
   <div class="orders-list" th:if="${orders != null and !orders.empty}">
 
     <div class="order-card" th:each="order : ${orders}">
 
-      <!-- Шапка заказа (Номер и дата) -->
       <div class="order-header">
         <div>
           <h3>Заказ №<span th:text="${order.id}"></span></h3>
@@ -43,7 +39,6 @@
         </div>
       </div>
 
-      <!-- Список товаров в заказе -->
       <div class="order-items">
         <div class="order-item" th:each="item : ${order.items}">
           <div class="item-info">
@@ -54,7 +49,6 @@
         </div>
       </div>
 
-      <!-- Подвал заказа (Итого) -->
       <div class="order-footer">
         <span class="total-label">Итого к оплате:</span>
         <span class="total-amount">

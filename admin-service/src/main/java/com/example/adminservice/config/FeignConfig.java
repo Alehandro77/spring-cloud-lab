@@ -19,7 +19,6 @@ public class FeignConfig {
             if (attributes != null) {
                 HttpServletRequest request = attributes.getRequest();
 
-                // Пробрасываем X-User-Role и X-User-Email
                 String role = request.getHeader("X-User-Role");
                 if (role != null) {
                     requestTemplate.header("X-User-Role", role);
@@ -29,7 +28,6 @@ public class FeignConfig {
                     requestTemplate.header("X-User-Email", email);
                 }
 
-                // И Authorization (если auth-service его парсит)
                 String auth = request.getHeader("Authorization");
                 if (auth != null) {
                     requestTemplate.header("Authorization", auth);

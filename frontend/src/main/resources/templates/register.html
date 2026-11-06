@@ -14,12 +14,10 @@
         <h2>Создать аккаунт</h2>
         <p class="auth-subtitle">Присоединяйтесь к louie Biton</p>
 
-        <!-- Вывод ошибки от контроллера -->
         <div th:if="${error}" class="error-box">
             <strong>Ошибка:</strong> <span th:text="${error}"></span>
         </div>
 
-        <!-- Форма отправляет POST на /register -->
         <form th:action="@{/register}" method="post">
 
             <div class="form-group">

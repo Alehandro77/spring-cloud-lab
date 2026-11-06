@@ -16,11 +16,11 @@ public record CreateProductRequest(
 
         @NotNull Long categoryId,
 
-        @NotBlank String gender,         // "MEN" / "WOMEN" / "UNISEX"
+        @NotBlank String gender,
 
         String color,
 
-        @NotEmpty List<String> sizes,    // ["S", "M", "L"]
+        @NotEmpty List<String> sizes,
 
         @NotNull @Min(0) Integer stockQuantity,
 

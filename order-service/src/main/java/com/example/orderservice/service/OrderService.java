@@ -57,7 +57,7 @@ public class OrderService {
         order.setTotalPrice(total);
 
         Order saved = orderRepo.save(order);
-        cartRepo.delete(cart);    // корзина очищается после заказа
+        cartRepo.delete(cart);
         log.info("Order {} created for buyer {}, total = {}", saved.getId(), buyerId, total);
         return toResponse(saved);
     }
