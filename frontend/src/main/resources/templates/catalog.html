@@ -11,16 +11,17 @@
 <div th:replace="~{header :: header}"></div>
 
 <main class="container">
-    <div class="catalog-header">
+    <section class="hero-low">
         <h1>Все товары</h1>
         <p>Выберите то, что подчеркнет вашу индивидуальность.</p>
-    </div>
+    </section>
+
 
     <div th:if="${error}" class="error-box">
         <strong>Ошибка:</strong> <span th:text="${error}"></span>
     </div>
 
-    <div class="products-grid" th:if="${products != null and !products.empty}">
+    <div class="products-grid" th:if="${products != null and !products.empty}" style="margin-top: 30px;">
         <div class="product-card" th:each="product : ${products}">
 
             <div class="product-image">

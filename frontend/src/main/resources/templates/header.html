@@ -26,7 +26,6 @@
         <!-- КНОПКА АДМИНА: Показывается только если роль = ADMIN -->
         <a th:if="${session.USER_ROLE == 'ADMIN'}"
            href="/admin"
-           class="btn btn-outline"
            style="border-color: var(--pink); color: var(--pink); display: flex; align-items: center; gap: 8px;">
             ⚙ Админ-панель
         </a>
