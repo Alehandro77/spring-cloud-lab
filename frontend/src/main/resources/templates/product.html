@@ -2,69 +2,132 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Товар</title></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product != null ? product.name : 'Товар'} + ' | louie Biton'">Товар</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
+<div th:replace="~{header :: header}"></div>
 
-<div th:if="${error}" style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
-    <b>Ошибка:</b> <span th:text="${error}"></span>
-</div>
-
-<div th:if="${product != null}">
-    <h1 th:text="${product.name}"></h1>
-    <p>Цена: <b th:text="${product.price}"></b></p>
-    <p>Бренд: <span th:text="${product.brand}"></span></p>
-    <p>Категория: <span th:text="${product.category}"></span></p>
-    <p>Размеры: <span th:text="${product.sizes}"></span></p>
-    <p>Сток: <span th:text="${product.stockQuantity}"></span></p>
-
-    <form method="post" action="/cart/add">
-        <input type="hidden" name="productId" th:value="${product.id}">
-        <input type="number" name="quantity" value="1" min="1">
-        <button type="submit">В корзину</button>
-    </form>
-
-    <h2>Отзывы</h2>
-    <div th:if="${reviewsError}" style="color: orange;" th:text="${reviewsError}"></div>
-    <div th:if="${reviews != null and reviews.isEmpty()}">Пока нет отзывов.</div>
-    <ul>
-        <li th:each="r : ${reviews}">
-            <b th:text="${r.rating}"></b> ★ — <span th:text="${r.comment}"></span>
-        </li>
-    </ul>
-
-    <div th:if="${success}" style="color: green; padding: 10px; border: 1px solid green; margin-bottom: 10px;">
-        ✅ <span th:text="${success}"></span>
+<main class="container">
+    <div th:if="${error}" class="error-box">
+        <strong>Ошибка:</strong> <span th:text="${error}"></span>
     </div>
 
-    <div th:if="${reviewError}" style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
-        ❌ <span th:text="${reviewError}"></span>
-    </div>
-    
-    <div th:if="${session.JWT_TOKEN != null}" style="border: 1px solid green; padding: 10px; margin-top: 20px;">
-        <h3>Оставить отзыв</h3>
-        <form method="post" action="/reviews/create">
-            <input type="hidden" name="productId" th:value="${product.id}">
-            <label>Оценка (1-5):
-                <select name="rating">
-                    <option value="5">5 ★</option>
-                    <option value="4">4 ★</option>
-                    <option value="3">3 ★</option>
-                    <option value="2">2 ★</option>
-                    <option value="1">1 ★</option>
-                </select>
-            </label>
-            <br>
-            <textarea name="comment" placeholder="Комментарий" rows="3" cols="40"></textarea>
-            <br>
-            <button type="submit">Отправить</button>
-        </form>
-    </div>
-    <p th:if="${session.JWT_TOKEN == null}" style="color: orange;">
-        <a href="/login">Войдите</a>, чтобы оставить отзыв.
-    </p>
+    <!-- Карточка товара -->
+    <div class="product-page-layout" th:if="${product != null}">
 
-</div>
+        <!-- ЛЕВАЯ ЧАСТЬ: Картинка -->
+        <div class="product-page-image">
+            <img th:src="${product.imageUrl != null and !product.imageUrl.isEmpty() ? product.imageUrl : 'https://via.placeholder.com/600x800?text=Нет+фото'}"
+                 th:alt="${product.name}">
+        </div>
 
-<a href="/catalog">Назад</a>
+        <!-- ПРАВАЯ ЧАСТЬ: Информация -->
+        <div class="product-page-info auth-card" style="max-width: 100%;">
+            <h1 th:text="${product.name}" class="product-title">Название товара</h1>
+
+            <div class="product-meta">
+                <span th:if="${product.brand != null}" class="brand" th:text="${product.brand}">Бренд</span>
+                <span th:if="${product.category != null}" class="category" th:text="${product.category}">Категория</span>
+            </div>
+
+            <p class="product-price"><span th:text="${product.price}">0</span> ₽</p>
+
+            <!-- Характеристики -->
+            <ul class="product-specs">
+                <li th:if="${product.sizes != null}">
+                    <strong>Размеры:</strong> <span th:text="${product.sizes}"></span>
+                </li>
+                <li th:if="${product.stockQuantity != null}">
+                    <strong>В наличии:</strong> <span th:text="${product.stockQuantity}"></span> шт.
+                </li>
+                <li th:if="${product.description != null}">
+                    <strong>Описание:</strong> <span th:text="${product.description}"></span>
+                </li>
+            </ul>
+
+            <!-- Форма добавления в корзину -->
+            <form method="post" action="/cart/add" class="add-to-cart-form">
+                <input type="hidden" name="productId" th:value="${product.id}">
+
+                <div class="quantity-control">
+                    <label>Количество:</label>
+                    <input type="number" name="quantity" value="1" min="1" max="99">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" style="font-size: 18px; padding: 18px;">
+                    Добавить в корзину
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- БЛОК ОТЗЫВОВ -->
+    <div class="reviews-section" th:if="${product != null}">
+        <h2 class="section-title">Отзывы</h2>
+
+        <div th:if="${reviewsError}" class="error-box" th:text="${reviewsError}"></div>
+
+        <!-- Сообщения об успехе/ошибке -->
+        <div th:if="${success}" class="success-box">
+            <span th:text="${success}"></span>
+        </div>
+        <div th:if="${reviewError}" class="error-box">
+            <span th:text="${reviewError}"></span>
+        </div>
+
+        <!-- Список отзывов -->
+        <div th:if="${reviews != null and reviews.isEmpty()}" style="color: #666; margin-bottom: 20px;">
+            Пока нет отзывов. Будьте первым!
+        </div>
+
+        <div class="reviews-list" th:if="${reviews != null and !reviews.isEmpty()}">
+            <div class="review-card" th:each="r : ${reviews}">
+                <div class="review-header">
+                    <span class="review-stars">
+                        <span th:text="${r.rating}"></span> ★
+                    </span>
+                    <!-- Если в отзыве есть дата, можно её вывести -->
+                </div>
+                <p th:text="${r.comment}">Текст отзыва</p>
+            </div>
+        </div>
+
+        <!-- Форма добавления отзыва -->
+        <div th:if="${session.JWT_TOKEN != null}" class="auth-card" style="max-width: 600px; margin-top: 30px;">
+            <h3 class="section-title" style="font-size: 20px;">Оставить отзыв</h3>
+            <form method="post" action="/reviews/create">
+                <input type="hidden" name="productId" th:value="${product.id}">
+
+                <div class="form-group">
+                    <label>Оценка</label>
+                    <select name="rating" style="width: 100%; padding: 16px 20px; border-radius: 14px; border: 2px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.4); font-size: 16px;">
+                        <option value="5">5 ★ Отлично</option>
+                        <option value="4">4 ★ Хорошо</option>
+                        <option value="3">3 ★ Нормально</option>
+                        <option value="2">2 ★ Плохо</option>
+                        <option value="1">1 ★ Ужасно</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Комментарий</label>
+                    <textarea name="comment" placeholder="Поделитесь впечатлениями..." rows="4" style="width: 100%; padding: 16px 20px; border-radius: 14px; border: 2px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.4); font-size: 16px; font-family: inherit; resize: vertical;"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-outline btn-block">Отправить отзыв</button>
+            </form>
+        </div>
+
+        <p th:if="${session.JWT_TOKEN == null}" style="color: #666; margin-top: 20px;">
+            <a href="/login" style="color: var(--pink); font-weight: bold;">Войдите</a>, чтобы оставить отзыв.
+        </p>
+    </div>
+
+    <div style="margin-top: 40px;">
+        <a href="/catalog" class="btn btn-outline">← Назад в каталог</a>
+    </div>
+</main>
 </body>
 </html>

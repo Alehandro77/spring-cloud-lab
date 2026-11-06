@@ -1,31 +1,69 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Мои заказы</title></head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мои заказы | louie Biton</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>Мои заказы</h1>
+<div th:replace="~{header :: header}"></div>
 
-<div th:if="${error}" style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
-  <b>Ошибка:</b> <span th:text="${error}"></span>
-</div>
+<main class="container">
+  <div class="catalog-header" style="margin-top: 40px;">
+    <h1>Мои заказы</h1>
+    <p>История ваших покупок.</p>
+  </div>
 
-<div th:if="${orders != null and orders.isEmpty()}">
-  <p>Заказов пока нет. <a href="/catalog">Перейти в каталог</a></p>
-</div>
+  <!-- Ошибка от контроллера -->
+  <div th:if="${error}" class="error-box">
+    <strong>Ошибка:</strong> <span th:text="${error}"></span>
+  </div>
 
-<div th:each="order : ${orders}" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
-  <p><b>Заказ №</b><span th:text="${order.id}"></span> —
-    <span th:text="${order.status}"></span></p>
-  <p><b>Сумма:</b> <span th:text="${order.totalPrice}"></span></p>
-  <p><b>Дата:</b> <span th:text="${order.createdAt}"></span></p>
-  <ul>
-    <li th:each="item : ${order.items}">
-      <span th:text="${item.productName}"></span> ×
-      <span th:text="${item.quantity}"></span> =
-      <span th:text="${item.price}"></span>
-    </li>
-  </ul>
-</div>
+  <!-- Если заказов нет -->
+  <div th:if="${orders == null or orders.empty}"
+       style="text-align: center; margin-top: 60px; background: rgba(255,255,255,0.6); padding: 50px; border-radius: 20px;">
+    <h2 style="font-size: 32px; margin-bottom: 15px;">У вас пока нет заказов</h2>
+    <p style="color: #666; margin-bottom: 30px;">Самое время выбрать что-то классное в каталоге!</p>
+    <a th:href="@{/catalog}" class="btn btn-primary">Перейти в каталог</a>
+  </div>
 
-<a href="/">На главную</a>
+  <!-- Список заказов -->
+  <div class="orders-list" th:if="${orders != null and !orders.empty}">
+
+    <div class="order-card" th:each="order : ${orders}">
+
+      <!-- Шапка заказа (Номер и дата) -->
+      <div class="order-header">
+        <div>
+          <h3>Заказ №<span th:text="${order.id}"></span></h3>
+          <p class="order-date">
+            от <span th:text="${#strings.replace(#strings.substring(order.createdAt, 0, 16), 'T', ' ')}">2026-11-06 12:38</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Список товаров в заказе -->
+      <div class="order-items">
+        <div class="order-item" th:each="item : ${order.items}">
+          <div class="item-info">
+            <span class="item-name" th:text="${item.productName}">Название товара</span>
+            <span class="item-qty" th:text="'× ' + ${item.quantity}">× 1</span>
+          </div>
+          <div class="item-price" th:text="${item.price} + ' ₽'">0 ₽</div>
+        </div>
+      </div>
+
+      <!-- Подвал заказа (Итого) -->
+      <div class="order-footer">
+        <span class="total-label">Итого к оплате:</span>
+        <span class="total-amount">
+                    <span th:text="${order.totalPrice}">0</span> ₽
+                </span>
+      </div>
+
+    </div>
+  </div>
+</main>
 </body>
 </html>

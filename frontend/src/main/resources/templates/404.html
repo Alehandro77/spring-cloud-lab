@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>404</title></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Страница не найдена | louie Biton</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>404 — Страница не найдена</h1>
-<a href="/">На главную</a>
+<div th:replace="~{header :: header}"></div>
+
+<main class="container">
+    <div class="error-page-wrapper">
+        <div class="error-code" style="color: var(--blue);">404</div>
+        <h1 class="error-title">Упс! Страница не найдена</h1>
+        <p class="error-desc">
+            Возможно, вы ошиблись в адресе, или эта страница была удалена.
+            Но не расстраивайтесь — в нашем каталоге есть много интересного!
+        </p>
+
+        <div class="error-actions">
+            <a href="/" class="btn btn-primary">На главную</a>
+            <a href="/catalog" class="btn btn-outline">В каталог</a>
+        </div>
+    </div>
+</main>
 </body>
 </html>

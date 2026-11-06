@@ -2,72 +2,154 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Админка</title></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | louie Biton</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>Админ-панель</h1>
-<p th:if="${error}" style="color: red" th:text="${error}"></p>
+<div th:replace="~{header :: header}"></div>
 
-<h2>Пользователи</h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Имя</th>
-        <th>Роль</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="u : ${users}">
-        <td th:text="${u.id}"></td>
-        <td th:text="${u.email}"></td>
-        <td th:text="${u.firstName + ' ' + u.lastName}"></td>
-        <td th:text="${u.role}"></td>
-    </tr>
-    </tbody>
-</table>
+<main class="container">
+    <div class="catalog-header" style="margin-top: 40px;">
+        <h1>Админ-панель</h1>
+        <p>Управление пользователями и товарами.</p>
+    </div>
 
-<h2>Добавить товар</h2>
-<form method="post" action="/admin/products/create">
-    <input type="text" name="name" placeholder="Название" required><br>
-    <input type="number" name="price" placeholder="Цена" step="0.01" required><br>
-    <input type="text" name="brand" placeholder="Бренд"><br>
-    <input type="text" name="color" placeholder="Цвет"><br>
-    <select name="categoryId">
-        <option value="1">Футболки</option>
-        <option value="2">Джинсы</option>
-        <option value="3">Куртки</option>
-        <option value="4">Платья</option>
-        <option value="5">Обувь</option>
-        <option value="6">Аксессуары</option>
-        <option value="7">Рубашки</option>
-        <option value="8">Свитера</option>
-    </select>
-    <select name="gender">
-        <option value="UNISEX">Унисекс</option>
-        <option value="MEN">Мужской</option>
-        <option value="WOMEN">Женский</option>
-    </select>
-    <input type="number" name="stockQuantity" placeholder="Кол-во на складе" value="10"><br>
-    <input type="text" name="sizes" placeholder="Размеры (S,M,L)"><br>
-    <button type="submit">Создать</button>
-</form>
+    <!-- Блок ошибки -->
+    <div th:if="${error}" class="error-box">
+        <strong>Ошибка:</strong> <span th:text="${error}"></span>
+    </div>
 
-<h2>Товары</h2>
-<table>
-    <tr><th>ID</th><th>Название</th><th>Цена</th><th>Действие</th></tr>
-    <tr th:each="p : ${products}">
-        <td th:text="${p.id}"></td>
-        <td th:text="${p.name}"></td>
-        <td th:text="${p.price}"></td>
-        <td>
-            <form method="post" th:action="@{/admin/products/delete/{id}(id=${p.id})}" style="display:inline">
-                <button type="submit">Удалить</button>
-            </form>
-        </td>
-    </tr>
-</table>
+    <!-- Сетка админки: форма слева, таблицы справа -->
+    <div class="admin-layout">
 
-<a href="/">На главную</a>
+        <!-- ЛЕВАЯ ЧАСТЬ: Форма добавления товара -->
+        <div class="admin-section">
+            <div class="auth-card" style="max-width: 100%;">
+                <h2 class="section-title">Добавить товар</h2>
+
+                <form method="post" action="/admin/products/create">
+                    <div class="form-group">
+                        <label>Название</label>
+                        <input type="text" name="name" placeholder="Например: Худи Oversize" required>
+                    </div>
+
+                    <div style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Цена (₽)</label>
+                            <input type="number" name="price" placeholder="0.00" step="0.01" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Кол-во</label>
+                            <input type="number" name="stockQuantity" value="10" min="0">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Бренд</label>
+                            <input type="text" name="brand" placeholder="Nike">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Цвет</label>
+                            <input type="text" name="color" placeholder="Черный">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Категория</label>
+                        <select name="categoryId" style="width: 100%; padding: 16px 20px; border-radius: 14px; border: 2px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.4); font-size: 16px;">
+                            <option value="1">Футболки</option>
+                            <option value="2">Джинсы</option>
+                            <option value="3">Куртки</option>
+                            <option value="4">Платья</option>
+                            <option value="5">Обувь</option>
+                            <option value="6">Аксессуары</option>
+                            <option value="7">Рубашки</option>
+                            <option value="8">Свитера</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Пол</label>
+                        <select name="gender" style="width: 100%; padding: 16px 20px; border-radius: 14px; border: 2px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.4); font-size: 16px;">
+                            <option value="UNISEX">Унисекс</option>
+                            <option value="MEN">Мужской</option>
+                            <option value="WOMEN">Женский</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Размеры (через запятую)</label>
+                        <input type="text" name="sizes" placeholder="S,M,L,XL">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Создать товар</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ПРАВАЯ ЧАСТЬ: Таблицы -->
+        <div class="admin-section" style="flex: 2;">
+
+            <!-- Таблица пользователей -->
+            <div class="auth-card" style="max-width: 100%; margin-bottom: 30px; padding: 25px;">
+                <h2 class="section-title" style="font-size: 22px;">Пользователи</h2>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Имя</th>
+                            <th>Роль</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="u : ${users}">
+                            <td th:text="${u.id}"></td>
+                            <td th:text="${u.email}"></td>
+                            <td th:text="${u.firstName + ' ' + u.lastName}"></td>
+                            <td>
+                                <span class="role-badge" th:classappend="${u.role == 'ADMIN' ? 'role-admin' : 'role-user'}" th:text="${u.role}"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Таблица товаров -->
+            <div class="auth-card" style="max-width: 100%; padding: 25px;">
+                <h2 class="section-title" style="font-size: 22px;">Товары</h2>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Цена</th>
+                            <th>Действие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="p : ${products}">
+                            <td th:text="${p.id}"></td>
+                            <td th:text="${p.name}"></td>
+                            <td th:text="${p.price} + ' ₽'"></td>
+                            <td>
+                                <form method="post" th:action="@{/admin/products/delete/{id}(id=${p.id})}" style="display:inline">
+                                    <button type="submit" class="btn-delete">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
 </body>
 </html>

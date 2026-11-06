@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head><meta charset="UTF-8"><title>Интернет-магазин одежды</title></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Louie Biton | Одежда</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>Интернет-магазин одежды</h1>
+<div th:replace="~{header :: header}"></div>
 
-<nav>
-    <a href="/catalog">Каталог</a> |
-    <a href="/cart">Корзина</a> |
-    <a href="/orders">Мои заказы</a> |
-    <a href="/profile">Профиль</a> |
-    <a href="/admin">Админка</a> |
-    <a href="/login">Войти</a> |
-    <a href="/register">Регистрация</a> |
-    <a href="/logout">Выйти</a>
-</nav>
+    <!-- Основной контент -->
+    <main class="container">
 
-<hr>
-<p>Добро пожаловать! Это костяк фронта. Глеб добавит CSS и красоту.</p>
+        <!-- Блок для вывода ошибок от API -->
+        <div id="api-error" class="error-box hidden"></div>
+
+        <!-- Главный баннер -->
+        <section class="hero">
+            <h1>Новая коллекция одежды</h1>
+            <p>Стиль, комфорт и свобода самовыражения в каждой детали.</p>
+        </section>
+    </main>
+
 </body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header class="navbar" th:fragment="header">
+    <!-- ОБЕРТКА ДЛЯ ЛОГОТИПА -->
+    <a href="/" class="logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+        <!-- Твоя картинка. Проверь путь к ней! -->
+        <img src="/images/logo.png" alt="Louie Biton Logo" style="height: 40px; width: auto; border-radius: 50%;">
+        <!-- Текст -->
+        <span>louie Biton</span>
+    </a>
+
+    <nav class="nav-links">
+        <!-- Используем правильные пути -->
+        <a th:href="@{/catalog}">Каталог</a>
+        <a th:href="@{/cart}">Корзина</a>
+        <a th:href="@{/orders}">Заказы</a>
+
+        <!-- Если пользователь НЕ вошел (токена нет) -->
+        <div th:if="${session.JWT_TOKEN == null}" style="display: flex; gap: 20px; align-items: center;">
+            <a th:href="@{/login}">Вход</a>
+            <a th:href="@{/register}" class="btn btn-primary">Регистрация</a>
+        </div>
+
+        <!-- КНОПКА АДМИНА: Показывается только если роль = ADMIN -->
+        <a th:if="${session.USER_ROLE == 'ADMIN'}"
+           href="/admin"
+           class="btn btn-outline"
+           style="border-color: var(--pink); color: var(--pink); display: flex; align-items: center; gap: 8px;">
+            ⚙ Админ-панель
+        </a>
+
+        <!-- Если пользователь ВОШЕЛ (токен есть) -->
+        <div th:if="${session.JWT_TOKEN != null}" style="display: flex; gap: 20px; align-items: center;">
+            <a th:href="@{/profile}" style="color: var(--pink); font-weight: bold;">
+                <!-- Берем email из ключа USER_EMAIL -->
+                <span th:text="${session.USER_EMAIL}">User</span>
+            </a>
+            <a th:href="@{/logout}" class="btn btn-outline" style="border-color: #dc3545; color: #dc3545;">Выйти</a>
+        </div>
+    </nav>
+</header>
+
+</body>
+</html>

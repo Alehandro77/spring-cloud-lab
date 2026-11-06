@@ -2,26 +2,79 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Личный кабинет</title></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | louie Biton</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>Личный кабинет</h1>
-<p th:if="${error}" style="color: red" th:text="${error}"></p>
+<div th:replace="~{header :: header}"></div>
 
-<h2>Профиль</h2>
-<form method="post" action="/profile/update">
-    <input type="text" name="firstName" th:value="${profile.firstName}" placeholder="Имя"><br>
-    <input type="text" name="lastName" th:value="${profile.lastName}" placeholder="Фамилия"><br>
-    <input type="number" name="age" th:value="${profile.age}" placeholder="Возраст"><br>
-    <input type="text" name="address" th:value="${profile.address}" placeholder="Адрес"><br>
-    <button type="submit">Сохранить</button>
-</form>
+<main class="container">
+    <div class="catalog-header" style="margin-top: 40px;">
+        <h1>Личный кабинет</h1>
+        <p>Управляйте своими данными и следите за активностью.</p>
+    </div>
 
-<h2>Статистика</h2>
-<p>Баланс: <b th:text="${stats.balance}"></b></p>
-<p>Заказов: <b th:text="${stats.orderCount}"></b></p>
-<p>Отзывов: <b th:text="${stats.reviewCount}"></b></p>
+    <!-- Блок ошибки от контроллера -->
+    <div th:if="${error}" class="error-box">
+        <strong>Ошибка:</strong> <span th:text="${error}"></span>
+    </div>
 
-<a href="/">На главную</a> |
-<a href="/logout">Выйти</a>
+    <div class="profile-layout">
+
+        <!-- ЛЕВАЯ ЧАСТЬ: Форма редактирования -->
+        <div class="profile-section">
+            <div class="auth-card">
+                <h2 class="section-title">Мои данные</h2>
+
+                <form method="post" action="/profile/update">
+                    <div class="form-group">
+                        <label for="firstName">Имя</label>
+                        <input type="text" id="firstName" name="firstName" th:value="${profile.firstName}" placeholder="Введите имя">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Фамилия</label>
+                        <input type="text" id="lastName" name="lastName" th:value="${profile.lastName}" placeholder="Введите фамилию">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Возраст</label>
+                        <input type="number" id="age" name="age" th:value="${profile.age}" placeholder="Ваш возраст">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Адрес доставки</label>
+                        <input type="text" id="address" name="address" th:value="${profile.address}" placeholder="Город, улица, дом">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Сохранить изменения</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ПРАВАЯ ЧАСТЬ: Статистика -->
+        <div class="profile-section">
+            <div class="auth-card" style="background: rgba(255, 255, 255, 0.7);">
+                <h2 class="section-title">Статистика</h2>
+
+                <div class="stat-row">
+                    <span>Заказов:</span>
+                    <span class="stat-value blue" th:text="${stats.orderCount}">0</span>
+                </div>
+
+                <div class="stat-row">
+                    <span>Отзывов:</span>
+                    <span class="stat-value dark" th:text="${stats.reviewCount}">0</span>
+                </div>
+
+                <a th:href="@{/orders}" class="btn btn-outline" style="width: 100%; margin-top: 20px; text-align: center;">
+                    Мои заказы
+                </a>
+            </div>
+        </div>
+
+    </div>
+</main>
 </body>
 </html>

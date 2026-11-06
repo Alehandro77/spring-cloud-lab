@@ -2,54 +2,101 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Корзина</title></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина | louie Biton</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* Дополнительные стили для заглушки картинки */
+        .cart-placeholder {
+            width: 100px; height: 120px; background: linear-gradient(135deg, var(--blue), var(--pink));
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 32px;
+        }
+    </style>
+</head>
 <body>
-<h1>Корзина</h1>
+<div th:replace="~{header :: header}"></div>
 
-<!-- Ошибка / недоступность -->
-<div th:if="${error}" style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 10px;">
-    <b>Ошибка:</b> <span th:text="${error}"></span>
-</div>
+<main class="container">
+    <div class="catalog-header" style="margin-top: 40px;">
+        <h1>Ваша корзина</h1>
+    </div>
 
-<!-- Пустая корзина -->
-<div th:if="${cart != null and cart.items.isEmpty()}">
-    <p>Корзина пуста. <a href="/catalog">Перейти в каталог</a></p>
-</div>
+    <!-- Ошибка, если корзина не загрузилась -->
+    <div th:if="${error}" class="error-box">
+        <strong>Ошибка:</strong> <span th:text="${error}"></span>
+    </div>
 
-<!-- Товары в корзине -->
-<table th:if="${cart != null and !cart.items.isEmpty()}" border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Товар</th>
-        <th>Цена</th>
-        <th>Кол-во</th>
-        <th>Действия</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${cart.items}">
-        <td th:text="${item.id}"></td>
-        <td th:text="${item.title}"></td>
-        <td th:text="${item.price}"></td>
-        <td th:text="${item.quantity}"></td>
-        <td>
-            <form method="post" th:action="@{/cart/remove/{id}(id=${item.id})}" style="display:inline">
-                <button type="submit">Удалить</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <!-- Если корзина есть и в ней есть товары -->
+    <div th:if="${cart != null and cart.items != null and !cart.items.empty}"
+         style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap; margin-top: 30px;">
 
-<p th:if="${cart != null and !cart.items.isEmpty()}">
-    <b>Итого: </b><span th:text="${cart.total}"></span>
-</p>
+        <!-- ЛЕВАЯ ЧАСТЬ: Список товаров -->
+        <div style="flex: 2; min-width: 300px;">
+            <!-- Цикл по товарам в корзине -->
+            <div th:each="item : ${cart.items}"
+                 class="card"
+                 style="display: flex; gap: 20px; margin-bottom: 20px; align-items: center; padding: 15px;">
 
-<form th:if="${cart != null and !cart.items.isEmpty()}" method="post" action="/cart/checkout">
-    <button type="submit">Оформить заказ</button>
-</form>
+                <!-- Заглушка вместо картинки (так как бэкенд не отдает imageUrl в корзине) -->
+                <div class="cart-placeholder">
+                    <span th:text="${#strings.substring(item.title, 0, 1)}">Т</span>
+                </div>
 
-<a href="/catalog">В каталог</a> | <a href="/">На главную</a>
+                <!-- Инфо -->
+                <div style="flex: 1;">
+                    <!-- Используем title вместо product.name -->
+                    <h3 th:text="${item.title}" style="font-size: 18px; margin-bottom: 5px;">Название</h3>
+                    <p style="color: #777; font-size: 14px; margin-bottom: 10px;">Артикул: #<span th:text="${item.productId}"></span></p>
+                    <!-- Цена одного товара -->
+                    <p style="font-weight: bold; font-size: 18px;"><span th:text="${item.price}"></span> ₽</p>
+                </div>
+
+                <!-- Количество и Удаление -->
+                <div style="text-align: right;">
+                    <p style="margin-bottom: 10px;">Кол-во: <strong th:text="${item.quantity}">1</strong></p>
+                    <!-- Итоговая цена за этот товар -->
+                    <p style="font-weight: bold; margin-bottom: 15px; color: var(--blue);">
+                        <span th:text="${item.price * item.quantity}"></span> ₽
+                    </p>
+
+                    <!-- Форма для удаления. Используем item.id -->
+                    <form th:action="@{'/cart/remove/' + ${item.id}}" method="post">
+                        <button type="submit" class="btn btn-outline" style="border-color: #dc3545; color: #dc3545; padding: 8px 15px; font-size: 14px;">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ПРАВАЯ ЧАСТЬ: Итоговая панель -->
+        <div style="flex: 1; min-width: 250px; position: sticky; top: 100px;">
+            <div class="auth-card" style="padding: 30px;">
+                <h3 style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">Итого</h3>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <span>Товары:</span>
+                    <!-- Бэкенд отдает общую сумму в поле total -->
+                    <strong style="font-size: 20px;"><span th:text="${cart.total}">0</span> ₽</strong>
+                </div>
+
+                <!-- Форма оформления заказа -->
+                <form th:action="@{/cart/checkout}" method="post">
+                    <button type="submit" class="btn btn-primary btn-block" style="padding: 15px;">Оформить заказ</button>
+                </form>
+
+                <a th:href="@{/catalog}" style="display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none;">← Вернуться в каталог</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Если корзина пуста -->
+    <div th:if="${cart == null or cart.items == null or cart.items.empty}"
+         style="text-align: center; margin-top: 80px; background: rgba(255,255,255,0.6); padding: 50px; border-radius: 20px;">
+        <h2 style="font-size: 32px; margin-bottom: 15px;">Ваша корзина пуста</h2>
+        <p style="color: #666; margin-bottom: 30px;">Самое время добавить что-нибудь стильное!</p>
+        <a th:href="@{/catalog}" class="btn btn-primary">Перейти в каталог</a>
+    </div>
+
+</main>
 </body>
 </html>

@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Доступ запрещён</title></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 — Доступ запрещен | louie Biton</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>403 — Доступ запрещён</h1>
-<p>У вас нет прав для этой страницы.</p>
-<a href="/">На главную</a>
+<div th:replace="~{header :: header}"></div>
+
+<main class="container">
+    <div class="error-page-wrapper">
+        <div class="error-code" style="color: var(--pink);">403</div>
+        <h1 class="error-title">Доступ запрещен</h1>
+        <p class="error-desc">
+            У вас нет прав для просмотра этой страницы.
+            Возможно, вы пытаетесь зайти в админ-панель без нужной роли, или ваша сессия истекла.
+        </p>
+
+        <div class="error-actions">
+            <a href="/" class="btn btn-primary">На главную</a>
+            <a href="/login" class="btn btn-outline">Войти под другим аккаунтом</a>
+        </div>
+    </div>
+</main>
 </body>
 </html>

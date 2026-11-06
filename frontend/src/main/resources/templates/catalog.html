@@ -1,37 +1,66 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Каталог</title></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Louie Biton | Каталог</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>Каталог товаров</h1>
-<a href="/">На главную</a> |
-<a href="/cart">Корзина</a> |
-<a href="/orders">Мои заказы</a>
 
-<div th:if="${error}" style="color: red; padding: 10px; border: 1px solid red; margin: 10px 0;">
-    <b>Ошибка:</b> <span th:text="${error}"></span>
-</div>
+<div th:replace="~{header :: header}"></div>
 
-<table border="1">
-    <thead>
-    <tr><th>ID</th><th>Название</th><th>Цена</th><th>Бренд</th><th>Категория</th><th>Действия</th></tr>
-    </thead>
-    <tbody>
-    <tr th:each="p : ${products}">
-        <td th:text="${p.id}"></td>
-        <td th:text="${p.name}"></td>
-        <td th:text="${p.price}"></td>
-        <td th:text="${p.brand}"></td>
-        <td th:text="${p.category}"></td>
-        <td>
-            <a th:href="@{/product/{id}(id=${p.id})}">Открыть</a>
-            <form method="post" action="/cart/add" style="display:inline">
-                <input type="hidden" name="productId" th:value="${p.id}">
-                <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
-                <button type="submit">В корзину</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<main class="container">
+    <div class="catalog-header">
+        <h1>Все товары</h1>
+        <p>Выберите то, что подчеркнет вашу индивидуальность.</p>
+    </div>
+
+    <div th:if="${error}" class="error-box">
+        <strong>Ошибка:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <div class="products-grid" th:if="${products != null and !products.empty}">
+        <div class="product-card" th:each="product : ${products}">
+
+            <div class="product-image">
+                <!-- Если imageUrl пустой, ставим заглушку -->
+                <img th:src="${product.imageUrl != null and !product.imageUrl.isEmpty() ? product.imageUrl : 'https://via.placeholder.com/300x400?text=Нет+фото'}"
+                     th:alt="${product.name}"
+                     style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <div class="product-info">
+                <h3 th:text="${product.name}">Название</h3>
+
+                <!-- Выводим бренд, только если он не пустой -->
+                <p th:if="${product.brand != null and !product.brand.isEmpty()}"
+                   style="color: #777; font-size: 14px; margin-bottom: 5px;"
+                   th:text="${product.brand}"></p>
+
+                <p class="price">
+                    <!-- BigDecimal выводится нормально, но добавим проверку на null -->
+                    <span th:text="${product.price != null ? product.price : '0'}">0</span> ₽
+                </p>
+
+                <!-- Кнопка перехода на страницу товара -->
+                <a th:href="@{/product/{id}(id=${product.id})}" class="btn btn-outline" style="margin-bottom: 10px;">Подробнее</a>
+
+                <!-- Форма добавления в корзину -->
+                <form action="/cart/add" method="post">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">В корзину</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:if="${products == null or products.empty}" style="text-align: center; margin-top: 50px;">
+        <h3>В каталоге пока нет товаров</h3>
+        <p>Загляните позже!</p>
+    </div>
+</main>
 </body>
 </html>
